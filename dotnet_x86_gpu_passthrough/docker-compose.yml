@@ -1,0 +1,34 @@
+# Advantech L2-01 development Docker Compose file
+# Created and maintained by Vincent Hung <Vincent.Hung@advantech.com.tw>
+# Copyright (c) 2025 Advantech Corporation. All rights reserved.
+services:
+  advantech-l2-01-dotnet:
+    image: dotnet-nvidia-gpu-passthrough:1.0.0-Ubuntu22.04-x86
+    container_name: advantech-l2-01-dotnet
+    tty: true
+    stdin_open: true
+    privileged: true
+    runtime: nvidia
+    restart: unless-stopped
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    # Mount volumes for data and code
+    volumes:
+      - ./app:/advantech
+    # Configure shared memory (important for certain GPU workloads)
+    shm_size: 8g
+    # Configure GPU requirements
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all  # Use all available GPUs
+              capabilities: [gpu]
+    # Uncomment if you need to expose ports
+    # ports:
+    #   - "8888:8888"  # Example port for Jupyter notebooks
+    
+    # Keep the container running
+    command: tail -f /dev/null
