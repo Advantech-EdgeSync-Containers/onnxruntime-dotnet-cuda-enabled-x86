@@ -91,15 +91,10 @@ The diagnostic report confirms full functionality of all GPU components:
 Detail of detected GPUs showing full hardware access and acceleration capabilities:
 
 ```
-Device 0: NVIDIA RTX 6000 Ada Generation
+Device 0: NVIDIA RTX 4000 Ada Generation
   Compute capability: 8.9
-  Total global memory: 47.50 GB
-  Multiprocessors: 142
-
-Device 1: NVIDIA RTX 6000 Ada Generation
-  Compute capability: 8.9
-  Total global memory: 47.50 GB
-  Multiprocessors: 142
+  Total global memory: 18.31 GB
+  Multiprocessors: 48
 ```
 
 ### NVIDIA Driver Performance
@@ -107,29 +102,32 @@ Device 1: NVIDIA RTX 6000 Ada Generation
 The container has passed all driver functionality tests with full access to the underlying NVIDIA hardware:
 
 ```
-Wed May  7 02:32:35 2025       
+Fri Jul 18 09:29:10 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 550.144.03             Driver Version: 550.144.03     CUDA Version: 12.4     |
+| NVIDIA-SMI 575.64.03              Driver Version: 575.64.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  NVIDIA RTX 6000 Ada Gene...    Off |   00000000:01:00.0 Off |                  Off |
-| 33%   62C    P8             41W /  300W |      12MiB /  49140MiB |      0%      Default |
+|   0  NVIDIA RTX 4000 Ada Gene...    Off |   00000000:C1:00.0 Off |                    0 |
+| 30%   37C    P8             11W /  130W |      15MiB /  19195MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-|   1  NVIDIA RTX 6000 Ada Gene...    Off |   00000000:81:00.0  On |                  Off |
-| 34%   62C    P8             34W /  300W |     334MiB /  49140MiB |      4%      Default |
-|                                         |                        |                  N/A |
-+-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
++-----------------------------------------------------------------------------------------+
 ```
 
 ## GPU Passthrough Capabilities
 
-The Advantech L2-01 container supports full GPU passthrough for:
+The Advantech .NET x86 GPU Passthrough container supports full GPU passthrough for:
 
-- NVIDIA RTX/Quadro series (tested with RTX 6000 Ada Generation)
+- NVIDIA RTX/Quadro series (tested with RTX 4000 Ada Generation)
 - NVIDIA Tesla/A-series accelerators 
 - NVIDIA GeForce RTX/GTX series
 - Multi-GPU configurations with automatic load balancing
@@ -190,11 +188,12 @@ Library locations:
 
 ## Pre-installed Development Tools
 
-The Advantech L2-01 container comes with these essential development tools pre-installed:
+The Advantech .NET x86 GPU Passthrough container comes with these essential development tools pre-installed:
 
 - **Build Tools**: gcc/g++, make, cmake, build-essential
 - **Version Control**: git
 - **Python Environment**: Python 3 with pip
+- **.NET Environment**: .NET SDK 9.0
 - **Utilities**: wget, curl, vim, unzip
 - **System Tools**: ca-certificates, gnupg2, lsb-release, software-properties-common
 
@@ -211,7 +210,7 @@ The container includes several features designed for production deployments:
 
 ## Application Support
 
-The Advantech L2-01 container is optimized for these AI/ML frameworks and applications:
+The Advantech .NET x86 GPU Passthrough container is optimized for these AI/ML frameworks and applications:
 
 - **Deep Learning Frameworks**: TensorFlow, PyTorch, JAX, MXNet
 - **Computer Vision Libraries**: OpenCV, NVIDIA TensorRT
@@ -241,46 +240,20 @@ The Advantech L2-01 container is optimized for these AI/ML frameworks and applic
 1. Clone the repository to your local machine
 2. Run the build script to detect and configure your CUDA environment:
 
-```bash
-./build.sh
-```
-
-## Advanced Configuration
-
-### Custom CUDA Version
-
-To specify a custom CUDA version, pass it as an argument to the build script:
-
-```bash
-./build.sh 11.8
-```
-
-### Custom cuDNN Version
-
-To specify both CUDA and cuDNN versions:
-
-```bash
-./build.sh 11.8 8.9.5
-```
-
-### Port Configuration
-
-Uncomment the ports section in docker-compose.yml to expose specific ports (e.g., for Jupyter notebooks):
-
-```yaml
-ports:
-  - "8888:8888"  # For Jupyter notebooks
-```
+   ```bash
+   ./build.sh
+   ```
 
 ## Verification and Diagnostics
 
-The package includes diagnostic scripts to verify your CUDA installation:
+The container includes diagnostic scripts and .NET test project to check enviroment for access to GPU resources:
 
 ### Basic CUDA Path Verification
 
 Run the CUDA path diagnostic script to check your installation configuration:
 
 ```bash
+cd /advantech
 ./cuda-diagnostic.sh
 ```
 
@@ -295,7 +268,8 @@ This script verifies:
 Run the CUDA test script to verify full GPU functionality:
 
 ```bash
-./cuda-test.sh
+cd /advantech
+./wise-test.sh
 ```
 
 This script performs:
@@ -304,6 +278,15 @@ This script performs:
 - cuDNN installation verification
 - Compilation and execution of a CUDA test program
 - GPU capability detection and reporting
+
+### GPU-enabled ONNX Runtime Execution Provider Test
+
+Follow these steps to run .NET test project:
+
+```bash
+cd /app/src/OnnxRuntimeGpuTest/
+dotnet run
+```
 
 ## CUDA Compatibility Matrix
 
@@ -348,13 +331,6 @@ The container uses the following Docker settings:
 - Balance loads between available GPUs
 
 ## Troubleshooting
-
-### L1-01 Container Issues
-
-For issues related to the advantechiot package:
-- Create an issue on GitHub: https://github.com/Advantech-EdgeSync/advantechiot
-
-### L2-01 Container Issues
 
 - **GPU Access Issues**: Verify NVIDIA driver installation with `nvidia-smi`
 - **CUDA Errors**: Check compatibility between driver and CUDA versions

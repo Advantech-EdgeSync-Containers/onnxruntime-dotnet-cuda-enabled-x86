@@ -5,9 +5,6 @@
 
 clear
 
-CONTAINER_ID=advantech-l2-01-dotnet
-$DOTNET_TEST_PROJ_NAME=OnnxRuntimeGpuTest
-
 GREEN='\033[0;32m'
 
 RED='\033[0;31m'
@@ -110,6 +107,10 @@ else
     exit 1
 fi
 
+# Define variables
+CONTAINER_ID=advantech-dotnet-x-nvidia-gpu-passthrough
+DOTNET_TEST_PROJ_NAME=OnnxRuntimeGpuTest
+
 # Copy files to the container
 echo "Copying CUDA diagnostic scripts to container..."
 if [ -f "wise-test.sh" ] && [ -f "cuda-diagnostic.sh" ]; then
@@ -126,22 +127,6 @@ if [ -f "wise-test.sh" ] && [ -f "cuda-diagnostic.sh" ]; then
 else
     echo "Error: One or both CUDA diagnostic scripts not found in the current directory."
     echo "Please ensure wise-test.sh and cuda-diagnostic.sh exist in the same directory as this script."
-fi
-
-# Create .NET test project and copy model to container
-echo "Create .NET test project and copy model to container..."
-if [ -f "yolov11n.onnx" ]; then
-
-    # Create .NET test project
-    docker exec $CONTAINER_ID dotnet new console -n $$DOTNET_TEST_PROJ_NAME
-    docker exec $CONTAINER_ID dotnet add $$DOTNET_TEST_PROJ_NAME/$$DOTNET_TEST_PROJ_NAME.csproj package Microsoft.ML.OnnxRuntime.Gpu.Linux --version 1.18.0
-
-    # Copy model to .NET test project in container
-    docker cp yolov11n.onnx $CONTAINER_ID:/advantech/OnnxRuntimeGpuTest/
-
-    echo ".NET test project created successfully."
-else
-    echo "Error: ONNX model yolov11n.onnx not found in the current directory."
 fi
 
 # Connect to container

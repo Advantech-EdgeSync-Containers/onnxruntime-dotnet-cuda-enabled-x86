@@ -1,10 +1,10 @@
-# Advantech L2-01 development Docker Compose file
+# Advantech .NET GPU Passthrough development Docker Compose file
 # Created and maintained by Vincent Hung <Vincent.Hung@advantech.com.tw>
 # Copyright (c) 2025 Advantech Corporation. All rights reserved.
 services:
-  advantech-l2-01-dotnet:
-    image: dotnet-nvidia-gpu-passthrough:1.0.0-Ubuntu22.04-x86
-    container_name: advantech-l2-01-dotnet
+  advantech-dotnet-x-nvidia-gpu-passthrough:
+    image: dotnet-x-nvidia-gpu-passthrough:1.0.0-Ubuntu22.04-x86
+    container_name: advantech-dotnet-x-nvidia-gpu-passthrough
     tty: true
     stdin_open: true
     privileged: true
