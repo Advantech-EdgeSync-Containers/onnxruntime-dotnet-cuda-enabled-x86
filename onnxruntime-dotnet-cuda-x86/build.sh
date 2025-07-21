@@ -108,7 +108,7 @@ else
 fi
 
 # Define variables
-CONTAINER_ID=advantech-dotnet-x-nvidia-gpu-passthrough
+CONTAINER_ID=onnxruntime-dotnet-cuda-x86
 DOTNET_TEST_PROJ_NAME=OnnxRuntimeGpuTest
 
 # Copy files to the container

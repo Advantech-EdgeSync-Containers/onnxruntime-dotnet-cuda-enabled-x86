@@ -2,9 +2,9 @@
 # Created and maintained by Vincent Hung <Vincent.Hung@advantech.com.tw>
 # Copyright (c) 2025 Advantech Corporation. All rights reserved.
 services:
-  advantech-dotnet-x-nvidia-gpu-passthrough:
-    image: dotnet-x-nvidia-gpu-passthrough:1.0.0-Ubuntu22.04-x86
-    container_name: advantech-dotnet-x-nvidia-gpu-passthrough
+  onnxruntime-dotnet-cuda-x86:
+    image: harbor.edgesync.cloud/edgesync-container/onnxruntime-dotnet-cuda-x86:1.0.0-Ubuntu22.04-x86
+    container_name: onnxruntime-dotnet-cuda-x86
     tty: true
     stdin_open: true
     privileged: true
