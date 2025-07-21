@@ -1,4 +1,4 @@
-# .NET-x86-GPU-passthrough
+# ONNX Runtime .NET on CUDA-enabled x86
 
 **Version:** 1.0 | **Release Date:** July 2025 | **Copyright:** © 2025 Advantech Corporation
 
